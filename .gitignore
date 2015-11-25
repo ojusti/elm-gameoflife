@@ -1,0 +1,11 @@
+# elm-package generated files
+# elm-package.json - this is useful, I have manually added dependencies to it
+elm-stuff/
+# elm-repl generated files
+repl-temp-*
+# elm.js is generated
+elm.js
+# index.html is generate by elm-make
+index.html
+test.js
+raw-test.js
