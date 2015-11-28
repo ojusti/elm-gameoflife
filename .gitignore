@@ -5,7 +5,5 @@ elm-stuff/
 repl-temp-*
 # elm.js is generated
 elm.js
-# index.html is generate by elm-make
+# index.html is generate by elm-make and I don't modify it
 index.html
-test.js
-raw-test.js
