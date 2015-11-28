@@ -35,7 +35,6 @@ tick universe =
       |> List.map (\x -> Maybe.withDefault [] x)
       |> List.sort
 
-
 neighbours : Cell -> Universe_Set
 neighbours cell =
   Set.map (add cell) deltas
@@ -69,8 +68,10 @@ count_live_cells_in_neighbourhood universe cell =
 evolve_dead : Universe_Set -> Cell -> Maybe Cell
 evolve_dead universe cell =
   case count_live_cells_in_neighbourhood universe cell of
-    3 -> Just cell
-    _ -> Nothing
+    3 ->
+      Just cell
+    _ ->
+      Nothing
 
 main =
   tick [[0,0],[1,0],[2,0]]
