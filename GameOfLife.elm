@@ -1,5 +1,8 @@
+module GameOfLife where
+
 import Set
 import Graphics.Element exposing (show)
+
 
 type alias Cell =
   List Int
