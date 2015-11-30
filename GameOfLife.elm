@@ -1,7 +1,6 @@
 module GameOfLife where
 
 import Set
-import Graphics.Element exposing (show)
 import Grid
 
 
@@ -73,8 +72,3 @@ evolve_dead universe grid cell =
       Just cell
     _ ->
       Nothing
-
-main =
-  tick [[0,0],[1,0],[2,0]]
-    |> tick
-    |> show
