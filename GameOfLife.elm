@@ -2,6 +2,7 @@ module GameOfLife where
 
 import Set
 import Graphics.Element exposing (show)
+import Grid
 
 
 type alias Cell =
@@ -17,40 +18,40 @@ type alias Universe_Set =
 tick : Universe -> Universe
 tick universe =
   let
+    grid : Universe_Set
+    grid =
+      Grid.dimensions universe
+        |> Grid.grid
+        |> Set.fromList
     universe_set =
       Set.fromList universe
     universe_and_void =
-      List.map neighbours universe
+      List.map (neighbours grid) universe
         |> List.foldl Set.union Set.empty
     void_universe =
       Set.diff universe_and_void universe_set
         |> Set.toList
     live_universe_evolved =
-      List.map (evolve_live universe_set) universe
+      List.map (evolve_live universe_set grid) universe
     void_universe_evolved =
-      List.map (evolve_dead universe_set) void_universe
+      List.map (evolve_dead universe_set grid) void_universe
   in
     List.append live_universe_evolved void_universe_evolved
       |> List.filter (\x -> x /= Nothing)
       |> List.map (\x -> Maybe.withDefault [] x)
       |> List.sort
 
-neighbours : Cell -> Universe_Set
-neighbours cell =
-  Set.map (add cell) deltas
-
-deltas : Universe_Set
-deltas =
-  Set.fromList [0..8]
-    |> Set.map (\x -> [x//3-1, x%3-1])
+neighbours : Universe_Set -> Cell -> Universe_Set
+neighbours grid cell =
+  Set.map (add cell) grid
 
 add : Cell -> Cell -> Cell
 add cell cell' =
   List.map2 (+) cell cell'
 
-evolve_live : Universe_Set -> Cell -> Maybe Cell
-evolve_live universe cell =
-  case count_live_cells_in_neighbourhood universe cell - 1 of
+evolve_live : Universe_Set -> Universe_Set -> Cell -> Maybe Cell
+evolve_live universe grid cell =
+  case count_live_cells_in_neighbourhood universe grid cell - 1 of
     2 ->
       Just cell
     3 ->
@@ -58,16 +59,16 @@ evolve_live universe cell =
     _ ->
       Nothing
 
-count_live_cells_in_neighbourhood : Universe_Set -> Cell -> Int
-count_live_cells_in_neighbourhood universe cell =
-  neighbours cell
+count_live_cells_in_neighbourhood : Universe_Set -> Universe_Set -> Cell -> Int
+count_live_cells_in_neighbourhood universe grid cell =
+  neighbours grid cell
     |> Set.intersect universe
     |> Set.toList
     |> List.length
 
-evolve_dead : Universe_Set -> Cell -> Maybe Cell
-evolve_dead universe cell =
-  case count_live_cells_in_neighbourhood universe cell of
+evolve_dead : Universe_Set -> Universe_Set -> Cell -> Maybe Cell
+evolve_dead universe grid cell =
+  case count_live_cells_in_neighbourhood universe grid cell of
     3 ->
       Just cell
     _ ->
