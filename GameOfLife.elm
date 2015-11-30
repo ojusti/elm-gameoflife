@@ -2,6 +2,7 @@ module GameOfLife where
 
 import Set
 import Grid
+import Rules
 
 
 type alias Cell =
@@ -50,13 +51,12 @@ add cell cell' =
 
 evolve_live : Universe_Set -> Universe_Set -> Cell -> Maybe Cell
 evolve_live universe grid cell =
-  case count_live_cells_in_neighbourhood universe grid cell - 1 of
-    2 ->
-      Just cell
-    3 ->
-      Just cell
-    _ ->
-      Nothing
+  let neighbors_count =
+    count_live_cells_in_neighbourhood universe grid cell - 1
+  in
+    if Rules.cell_survives neighbors_count
+      then Just cell
+      else Nothing
 
 count_live_cells_in_neighbourhood : Universe_Set -> Universe_Set -> Cell -> Int
 count_live_cells_in_neighbourhood universe grid cell =
@@ -67,8 +67,9 @@ count_live_cells_in_neighbourhood universe grid cell =
 
 evolve_dead : Universe_Set -> Universe_Set -> Cell -> Maybe Cell
 evolve_dead universe grid cell =
-  case count_live_cells_in_neighbourhood universe grid cell of
-    3 ->
-      Just cell
-    _ ->
-      Nothing
+  let neighbors_count =
+    count_live_cells_in_neighbourhood universe grid cell
+  in
+    if Rules.cell_appears neighbors_count
+      then Just cell
+      else Nothing
