@@ -22,19 +22,21 @@ digits base number =
     remainder = number%base
     quotient = number//base
   in
-    if number == 0
-      then [0]
-      else remainder::digits base quotient
+    if number == 0 then
+      [0]
+    else
+      remainder::digits base quotient
 
 fixSize length list =
   let
     diff = length - List.length list
   in
-    if diff == 0
-      then list
-      else if diff > 0
-        then List.append (List.repeat diff 0) list
-        else List.drop -diff list
+    if diff == 0 then
+      list
+    else if diff > 0 then
+      List.append (List.repeat diff 0) list
+    else
+      List.drop -diff list
 
 subtract number list =
     List.map (\x -> x - 1) list
