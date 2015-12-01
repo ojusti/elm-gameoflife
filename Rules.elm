@@ -2,18 +2,7 @@ module Rules where
 
 
 cell_survives neighbors =
-  case neighbors of
-    2 ->
-      True
-    3 ->
-      True
-    _ ->
-      False
-
+  neighbors == 2 || neighbors == 3
 
 cell_appears neighbors =
-  case neighbors of
-    3 ->
-      True
-    _ ->
-      False
+  neighbors == 3
