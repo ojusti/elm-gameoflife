@@ -54,9 +54,10 @@ evolve_live universe grid cell =
   let neighbors_count =
     count_live_cells_in_neighbourhood universe grid cell - 1
   in
-    if Rules.cell_survives neighbors_count
-      then Just cell
-      else Nothing
+    if Rules.cell_survives neighbors_count then
+      Just cell
+    else
+      Nothing
 
 count_live_cells_in_neighbourhood : Universe_Set -> Universe_Set -> Cell -> Int
 count_live_cells_in_neighbourhood universe grid cell =
@@ -70,6 +71,7 @@ evolve_dead universe grid cell =
   let neighbors_count =
     count_live_cells_in_neighbourhood universe grid cell
   in
-    if Rules.cell_appears neighbors_count
-      then Just cell
-      else Nothing
+    if Rules.cell_appears neighbors_count then
+      Just cell
+    else
+      Nothing
